@@ -1,6 +1,5 @@
 // dataset details card component
 import React from 'react';
-// import './Card.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';

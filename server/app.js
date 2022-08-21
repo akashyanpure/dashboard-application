@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express(),
       bodyParser = require("body-parser");
-      port = 80;
+      port = 3001;
 
 const Pool = require('pg').Pool
 const pool = new Pool({
@@ -33,7 +33,7 @@ const users = [
 ];
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../my-app/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/api/users', (req, res) => {
   console.log('/datasets/metadata called!');
@@ -65,7 +65,7 @@ app.get('/datasets/metadata', (req, res) => {
 });
 
 app.get('/', (req,res) => {
-  res.sendFile(path.join(__dirname, '../my-app/build/index.html'));
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 app.listen(port, () => {

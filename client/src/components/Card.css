@@ -30,6 +30,23 @@
   padding-bottom: calc(100% - 16px);
   margin-bottom: 6.6em;
 }
+
+.material-card h6 {
+  left: 0;
+  width: 100%;
+  padding: 5px;
+  color: #fff;
+  font-size: 0.5em;
+  line-height: 1.5em;
+  margin: 0;
+  z-index: 10;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
 .material-card h2 {
   position: absolute;
   top: calc(100% - 16px);
