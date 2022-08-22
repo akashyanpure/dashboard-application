@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -26,6 +26,37 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install
-    - run: cd server
+    # - run: npm install
+    # - run: cd server
     # - run: npm start
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.EC2_PRIVATE_KEY }
+        known_hosts: ${{ secrets.KNOWN_HOST }
+    
+    - name: Deploy with rsync
+      run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/zellwk.com/
+
+    - name: Restart Node Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd /var/www/zellwk.com
+          git fetch origin master
+          git reset --hard FETCH_HEAD
+          git clean -d -f --exclude secrets
+          npm install --production
+          chown $(whoami) . # PM2 doesn't recognize root user from Github Actions
+          npm run restart
+      
+
+    

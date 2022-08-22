@@ -1,0 +1,9 @@
+cd dashboard-application/
+git fetch
+cd client/
+npm install
+npm run-script build
+cd ..
+cd server/
+npm install
+forever start app.js
